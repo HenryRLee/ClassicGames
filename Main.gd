@@ -7,8 +7,8 @@ const n = 8
 const m = 12
 const images = 16
 var imageShuffle = []
-var active
-var activeNode
+var active = -1
+var activeTile
 
 func _ready():
 	randomize()
@@ -31,19 +31,26 @@ func _input(event):
 		if event.pressed:
 			var j = int(event.position.x) / size
 			var i = int(event.position.y) / size
-			if !active:
+
+			if imageShuffle[i * m + j] == -1:
+				if active != -1:
+					erase(activeTile)
+					active = -1
+				return
+
+			if active == -1:
 				active = i * m + j
-				activeNode = grid[i][j].duplicate()
-				activeNode.scale = activeNode.scale * 1.1
-				add_child(activeNode)
+				activeTile = Tile.instance()
+				activeTile.scale = activeTile.scale * 1.1
+				activeTile.translate(Vector2(j * size, i * size))
+				activeTile.animation = str(imageShuffle[active])
+				add_child(activeTile)
 			else:
 				if matching(i * m + j, active):
 					erase(grid[i][j])
 					erase(grid[active / m][active % m])
-					print("matched")
-				active = null
-				remove_child(activeNode)
-				activeNode.queue_free()
+				erase(activeTile)
+				active = -1
 
 func matching(a, b):
 	if a == b: return false
