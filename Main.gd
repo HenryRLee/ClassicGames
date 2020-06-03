@@ -7,6 +7,8 @@ const n = 8
 const m = 12
 const images = 16
 var imageShuffle = []
+var active
+var activeNode
 
 func _ready():
 	randomize()
@@ -24,8 +26,6 @@ func _ready():
 			row.append(tile)
 		grid.append(row)
 
-var active
-
 func _input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
@@ -33,12 +33,17 @@ func _input(event):
 			var i = int(event.position.y) / size
 			if !active:
 				active = i * m + j
+				activeNode = grid[i][j].duplicate()
+				activeNode.scale = activeNode.scale * 1.1
+				add_child(activeNode)
 			else:
 				if matching(i * m + j, active):
 					erase(grid[i][j])
 					erase(grid[active / m][active % m])
 					print("matched")
 				active = null
+				remove_child(activeNode)
+				activeNode.queue_free()
 
 func matching(a, b):
 	if a == b: return false
