@@ -22,3 +22,25 @@ func _on_Board_win():
 	$ScoreTimer.stop()
 	$Message.show()
 	$Message.text = "Your score is " + str(score)
+	var highScore = loadHighScore()
+	if score < highScore:
+		saveHighScore(score)
+		$Message.text += "\nNew highscore!"
+	else:
+		$Message.text += "\nThe highscore is " + str(highScore)
+
+func saveHighScore(highScore):
+	var file = File.new()
+	file.open("user://high_score.dat", File.WRITE)
+	file.store_string(str(highScore))
+	file.close()
+
+func loadHighScore():
+	var file = File.new()
+	file.open("user://high_score.dat", File.READ)
+	var content = file.get_as_text()
+	file.close()
+	if content:
+		return int(content)
+	else:
+		return 0
