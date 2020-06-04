@@ -36,10 +36,29 @@ margin_top = -120.0
 margin_right = -320.0
 margin_bottom = -80.0
 rect_scale = Vector2( 4, 4 )
-text = "Your score 120"
+text = "Your score is 120
+Highscore 100"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="RestartButton" type="Button" parent="HUD"]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = 153.0
+margin_right = -63.0
+margin_bottom = 173.0
+rect_scale = Vector2( 4, 4 )
+text = "Restart"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="win" from="Board" to="HUD" method="_on_Board_win"]
+[connection signal="restart" from="HUD" to="Board" method="_on_HUD_restart"]
 [connection signal="timeout" from="HUD/ScoreTimer" to="HUD" method="_on_ScoreTimer_timeout"]
+[connection signal="pressed" from="HUD/RestartButton" to="HUD" method="_on_RestartButton_pressed"]

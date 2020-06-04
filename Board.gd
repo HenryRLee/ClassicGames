@@ -2,18 +2,22 @@ extends Node2D
 
 signal win
 
-var grid = []
+var grid
 onready var Tile = preload("res://Tile.tscn")
 const size = 96
 const n = 8
 const m = 12
 const images = 16
-var imageShuffle = []
-var active = -1
+var imageShuffle
+var active
 var activeTile
 var remaining = n * m
 
 func _ready():
+	active = -1
+	remaining = n * m
+	imageShuffle = []
+	grid = []
 	randomize()
 	for i in range(images):
 		for j in range(n * m / images):
@@ -114,3 +118,6 @@ func connectedH(y, x1, x2):
 func erase(node):
 	remove_child(node)
 	node.queue_free()
+
+func _on_HUD_restart():
+	_ready()

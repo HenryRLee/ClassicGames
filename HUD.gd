@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal restart
+
 var score = 0
 
 func _ready():
@@ -20,6 +22,7 @@ func _on_ScoreTimer_timeout():
 
 func _on_Board_win():
 	$ScoreTimer.stop()
+	$RestartButton.show()
 	$Message.show()
 	$Message.text = "Your score is " + str(score)
 	var highScore = loadHighScore()
@@ -44,3 +47,9 @@ func loadHighScore():
 		return int(content)
 	else:
 		return 0
+
+func _on_RestartButton_pressed():
+	startTimer()
+	$Message.hide()
+	$RestartButton.hide()
+	emit_signal("restart")
