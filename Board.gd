@@ -29,8 +29,8 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton:
 		if event.pressed:
-			var j = int(event.position.x) / size
-			var i = int(event.position.y) / size
+			var j = int(to_local(event.position).x) / size
+			var i = int(to_local(event.position).y) / size
 
 			if imageShuffle[i * m + j] == -1:
 				if active != -1:
