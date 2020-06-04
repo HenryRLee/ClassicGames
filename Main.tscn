@@ -1,8 +1,27 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Board.tscn" type="PackedScene" id=1]
+[ext_resource path="res://HUD.gd" type="Script" id=2]
 
 [node name="Main" type="Node2D"]
 
 [node name="Board" parent="." instance=ExtResource( 1 )]
 position = Vector2( 64, 64 )
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource( 2 )
+
+[node name="ScoreLabel" type="Label" parent="HUD"]
+margin_left = 1136.0
+margin_top = 24.0
+margin_right = 1176.0
+margin_bottom = 38.0
+rect_scale = Vector2( 2, 2 )
+text = "0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScoreTimer" type="Timer" parent="HUD"]
+[connection signal="timeout" from="HUD/ScoreTimer" to="HUD" method="_on_ScoreTimer_timeout"]
