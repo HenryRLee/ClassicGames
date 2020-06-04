@@ -17,3 +17,8 @@ func updateScore():
 func _on_ScoreTimer_timeout():
 	score += 1
 	updateScore()
+
+func _on_Board_win():
+	$ScoreTimer.stop()
+	$Message.show()
+	$Message.text = "Your score is " + str(score)

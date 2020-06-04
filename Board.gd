@@ -1,5 +1,7 @@
 extends Node2D
 
+signal win
+
 var grid = []
 onready var Tile = preload("res://Tile.tscn")
 const size = 96
@@ -9,6 +11,7 @@ const images = 16
 var imageShuffle = []
 var active = -1
 var activeTile
+var remaining = n * m
 
 func _ready():
 	randomize()
@@ -49,6 +52,8 @@ func _input(event):
 				if matching(i * m + j, active):
 					erase(grid[i][j])
 					erase(grid[active / m][active % m])
+					remaining -= 2
+					if remaining == 0: emit_signal("win")
 				erase(activeTile)
 				active = -1
 
