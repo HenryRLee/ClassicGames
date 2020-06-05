@@ -40,6 +40,9 @@ func _input(event):
 			var j = int(to_local(event.position).x) / size
 			var i = int(to_local(event.position).y) / size
 
+			if j < 0 || j >= m: return
+			if i < 0 || i >= n: return
+
 			if imageShuffle[i * m + j] == -1:
 				if active != -1:
 					erase(activeTile)
