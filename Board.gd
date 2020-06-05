@@ -4,6 +4,7 @@ signal win
 
 var grid
 onready var Tile = preload("res://Tile.tscn")
+onready var Drawer = preload("res://Drawer.tscn")
 const size = 96
 const n = 8
 const m = 12
@@ -76,22 +77,44 @@ func matching(a, b):
 	var by = b / m
 
 	if ax == bx:
-		if connectedV(ax, ay, by): return true
+		if connectedV(ax, ay, by):
+			draw([Vector2(ax, ay), Vector2(bx, by)])
+			return true
 
 	if ay == by:
-		if connectedH(ay, ax, bx): return true
+		if connectedH(ay, ax, bx):
+			draw([Vector2(ax, ay), Vector2(bx, by)])
+			return true
 
 	for x in range(-1, m+1):
 		if connectedH(ay, x, ax) && connectedH(by, x, bx) && connectedV(x, ay, by):
+			draw([Vector2(ax, ay), Vector2(x, ay),\
+				  Vector2(x, ay), Vector2(x, by),\
+				  Vector2(x, by), Vector2(bx, by)])
 			return true
 
 	for y in range(-1, n+1):
 		if connectedV(ax, y, ay) && connectedV(bx, y, by) && connectedH(y, ax, bx):
+			draw([Vector2(ax, ay), Vector2(ax, y),\
+				  Vector2(ax, y), Vector2(bx, y),\
+				  Vector2(bx, y), Vector2(bx, by)])
 			return true
 
 	imageShuffle[a] = image
 	imageShuffle[b] = image
 	return false
+
+func draw(v):
+	var drawer = Drawer.instance()
+	for i in range(v.size()):
+		v[i] = to_global(v[i] * size - Vector2(size/8, size/8))
+	print(v)
+	drawer.draw(v)
+	add_child(drawer)
+
+	yield(get_tree().create_timer(0.2), "timeout")
+	remove_child(drawer)
+	drawer.queue_free()
 
 func connectedV(x, y1, y2):
 	if x < 0 || x >= m: return true
