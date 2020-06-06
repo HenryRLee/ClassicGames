@@ -10,11 +10,13 @@ const n = 8
 const m = 12
 const images = 16
 var imageShuffle
-var active
+var active = -1
 var activeTile
 var remaining = n * m
 
 func _ready():
+	for child in get_children():
+		child.queue_free()
 	active = -1
 	remaining = n * m
 	imageShuffle = []

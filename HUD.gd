@@ -48,8 +48,14 @@ func loadHighScore():
 	else:
 		return 0
 
-func _on_RestartButton_pressed():
+func restart():
 	startTimer()
 	$Message.hide()
 	$RestartButton.hide()
 	emit_signal("restart")
+
+func _on_RestartButton_pressed():
+	restart()
+
+func _on_RestartButtonSmall_pressed():
+	restart()
