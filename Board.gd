@@ -47,7 +47,7 @@ func _input(event):
 
 			if imageShuffle[i * m + j] == -1:
 				if active != -1:
-					erase(activeTile)
+					activeTile.queue_free()
 					active = -1
 				return
 
@@ -60,13 +60,13 @@ func _input(event):
 				add_child(activeTile)
 			else:
 				if matching(i * m + j, active):
-					erase(grid[i][j])
-					erase(grid[active / m][active % m])
+					grid[i][j].queue_free()
+					grid[active / m][active % m].queue_free()
 					remaining -= 2
 					if remaining == 0:
 						yield(get_tree().create_timer(0.3), "timeout")
 						emit_signal("win")
-				erase(activeTile)
+				activeTile.queue_free()
 				active = -1
 
 func matching(a, b):
@@ -133,7 +133,6 @@ func draw(v):
 	add_child(drawer)
 
 	yield(get_tree().create_timer(0.2), "timeout")
-	remove_child(drawer)
 	drawer.queue_free()
 
 func connectedV(x, y1, y2):
@@ -157,10 +156,6 @@ func connectedH(y, x1, x2):
 		if imageShuffle[y * m + x] != -1:
 			return false
 	return true
-
-func erase(node):
-	remove_child(node)
-	node.queue_free()
 
 func _on_HUD_restart():
 	_ready()
