@@ -59,6 +59,7 @@ func _input(event):
 				activeTile.animation = str(imageShuffle[active])
 				add_child(activeTile)
 			else:
+				activeTile.queue_free()
 				if matching(i * m + j, active):
 					grid[i][j].queue_free()
 					grid[active / m][active % m].queue_free()
@@ -66,7 +67,6 @@ func _input(event):
 					if remaining == 0:
 						yield(get_tree().create_timer(0.3), "timeout")
 						emit_signal("win")
-				activeTile.queue_free()
 				active = -1
 
 func matching(a, b):
