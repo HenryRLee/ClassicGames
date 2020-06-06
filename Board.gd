@@ -61,7 +61,9 @@ func _input(event):
 					erase(grid[i][j])
 					erase(grid[active / m][active % m])
 					remaining -= 2
-					if remaining == 0: emit_signal("win")
+					if remaining == 0:
+						yield(get_tree().create_timer(0.3), "timeout")
+						emit_signal("win")
 				erase(activeTile)
 				active = -1
 
@@ -89,29 +91,42 @@ func matching(a, b):
 			draw([Vector2(ax, ay), Vector2(bx, by)])
 			return true
 
+	var shortest = n * m
+	var shortestPath = []
+	var matched = false
+
 	for x in range(-1, m+1):
 		if connectedH(ay, x, ax) && connectedH(by, x, bx) && connectedV(x, ay, by):
-			draw([Vector2(ax, ay), Vector2(x, ay),\
-				  Vector2(x, ay), Vector2(x, by),\
-				  Vector2(x, by), Vector2(bx, by)])
-			return true
+			var distance = abs(ax - x) + abs(bx - x) + abs(ay - by)
+			if distance < shortest:
+				shortest = distance
+				shortestPath = [Vector2(ax, ay), Vector2(x, ay),\
+								Vector2(x, ay), Vector2(x, by),\
+				  				Vector2(x, by), Vector2(bx, by)]
+			matched = true
 
 	for y in range(-1, n+1):
 		if connectedV(ax, y, ay) && connectedV(bx, y, by) && connectedH(y, ax, bx):
-			draw([Vector2(ax, ay), Vector2(ax, y),\
-				  Vector2(ax, y), Vector2(bx, y),\
-				  Vector2(bx, y), Vector2(bx, by)])
-			return true
+			var distance = abs(ay - y) + abs(by - y) + abs(ax - bx)
+			if distance < shortest:
+				shortest = distance
+				shortestPath = [Vector2(ax, ay), Vector2(ax, y),\
+								Vector2(ax, y), Vector2(bx, y),\
+								Vector2(bx, y), Vector2(bx, by)]
+			matched = true
 
-	imageShuffle[a] = image
-	imageShuffle[b] = image
-	return false
+	if matched:
+		draw(shortestPath)
+		return true
+	else:
+		imageShuffle[a] = image
+		imageShuffle[b] = image
+		return false
 
 func draw(v):
 	var drawer = Drawer.instance()
 	for i in range(v.size()):
 		v[i] = to_global(v[i] * size - Vector2(size/8, size/8))
-	print(v)
 	drawer.draw(v)
 	add_child(drawer)
 
