@@ -4,7 +4,7 @@
 
 Matching (连连看) is the first Godot game I developed. The rule of the game
 is simple: Find two matching images that can be connected with no more than three
-staight lines in cardinal directions. Click on them to eliminate them. The game
+straight lines in cardinal directions. Click on them to eliminate them. The game
 finishes when you eliminate all the images.
 
 ![Matching](docs/images/matching.gif)
