@@ -8,7 +8,7 @@ The rule of the game is simple:
 
 * Find two matching images that can be connected with no more than three
 straight lines in cardinal directions
-* Click on matching images to eliminate them
+* Click on the images pair to eliminate them
 * The game finishes when you eliminate all the images
 
 [![Matching](docs/images/matching.gif)](https://henryrlee.github.io/GodotGames/Matching/)
