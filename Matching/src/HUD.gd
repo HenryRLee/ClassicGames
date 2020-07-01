@@ -46,7 +46,7 @@ func loadHighScore():
 	if content:
 		return int(content)
 	else:
-		return 0
+		return 65535
 
 func restart():
 	startTimer()
