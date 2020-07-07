@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Board.tscn" type="PackedScene" id=1]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=2]
+
+[node name="Main" type="Node2D"]
+
+[node name="Board" parent="." instance=ExtResource( 1 )]
+position = Vector2( 48, 48 )
+scale = Vector2( 1.5, 1.5 )
+
+[node name="HUD" parent="." instance=ExtResource( 2 )]
+position = Vector2( 768, 0 )
+[connection signal="win" from="Board" to="HUD" method="_on_Board_win"]
+[connection signal="chooseSide" from="HUD" to="Board" method="_on_HUD_chooseSide"]
+[connection signal="newGame" from="HUD" to="Board" method="_on_HUD_newGame"]
+[connection signal="startGame" from="HUD" to="Board" method="_on_HUD_startGame"]
+[connection signal="stopGame" from="HUD" to="Board" method="_on_HUD_stopGame"]
